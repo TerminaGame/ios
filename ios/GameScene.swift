@@ -1,110 +1,120 @@
 //
 //  GameScene.swift
-//  ios
+//  TerminaSK Shared
 //
-//  Created by Marquis Kurt on 11/18/18.
+//  Created by Marquis Kurt on 11/17/18.
 //  Copyright © 2018 Marquis Kurt. All rights reserved.
 //
 
 import SpriteKit
-import GameplayKit
+import Foundation
 
 class GameScene: SKScene {
     
-    var entities = [GKEntity]()
-    var graphs = [String : GKGraph]()
+    // SKNodes
+    var roomBackground : SKSpriteNode?
+    var healthHUD : SKSpriteNode?
+    var healthHUDNumber: SKLabelNode?
+    var levelBadgeNumber: SKLabelNode?
+    var playerNameLabel: SKLabelNode?
     
-    private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    // Important vars
+    var currentHealth: Int = 0
+    var currentLevel: Int = 1
+    var playerName: String = "Henry"
     
-    override func sceneDidLoad() {
-
-        self.lastUpdateTime = 0
+    func updateHealthStatus(number: Int) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
-        
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+        if number <= 0 {
+            currentHealth = 0
         }
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        healthHUDNumber?.text = String(currentHealth)
+        
+        if number > 90 {
+            healthHUD?.texture = SKTexture(imageNamed: "100")
+        } else if number > 80 {
+            healthHUD?.texture = SKTexture(imageNamed: "90")
+        } else if number > 70 {
+            healthHUD?.texture = SKTexture(imageNamed: "80")
+        } else if number > 60 {
+            healthHUD?.texture = SKTexture(imageNamed: "70")
+        } else if number > 50 {
+            healthHUD?.texture = SKTexture(imageNamed: "60")
+        } else if number > 40 {
+            healthHUD?.texture = SKTexture(imageNamed: "50")
+        } else if number > 30 {
+            healthHUD?.texture = SKTexture(imageNamed: "40")
+        } else if number > 20 {
+            healthHUD?.texture = SKTexture(imageNamed: "30")
+        } else if number > 10 {
+            healthHUD?.texture = SKTexture(imageNamed: "20")
+        } else if number > 0 {
+            healthHUD?.texture = SKTexture(imageNamed: "10")
+        } else {
+            healthHUD?.texture = SKTexture(imageNamed: "0")
+        }
+        
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+    func updateLevelBadge(number: Int) {
+        currentLevel = number
+        levelBadgeNumber?.text = String(currentLevel)
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    func updatePlayerHUD(health: Int, level: Int) {
+        updateHealthStatus(number: health)
+        updateLevelBadge(number: level)
     }
     
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    func setUpScene() {
+        roomBackground = childNode(withName: "roomBackground") as? SKSpriteNode
+        roomBackground?.texture = SKTexture(imageNamed: "bg29")
+        
+        healthHUD = childNode(withName: "healthHudDisplay") as? SKSpriteNode
+        healthHUDNumber = childNode(withName: "healthHudNumber") as? SKLabelNode
+        healthHUDNumber?.fontName = UIFont.boldSystemFont(ofSize: 48).fontName
+        
+        currentHealth = 100
+        updateHealthStatus(number: currentHealth)
+        
+        levelBadgeNumber = childNode(withName: "levelBadgeCount") as? SKLabelNode
+        levelBadgeNumber?.fontName = UIFont.systemFont(ofSize: 18).fontName
+        
+        playerNameLabel = childNode(withName: "playerNameLabel") as? SKLabelNode
+        playerNameLabel?.fontName = UIFont.boldSystemFont(ofSize: 18).fontName
+        playerNameLabel?.text = playerName
     }
     
+    override func didMove(to view: SKView) {
+        self.setUpScene()
+    }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        
-        // Initialize _lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
-        }
-        
-        // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
-        
-        // Update entities
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
-        }
-        
-        self.lastUpdateTime = currentTime
     }
+}
+
+extension GameScene {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        currentHealth = currentHealth - 1
+        currentLevel += 1
+        
+        updatePlayerHUD(health: currentHealth, level: currentLevel)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
+    
+    
 }

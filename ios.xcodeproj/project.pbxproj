@@ -15,6 +15,7 @@
 		BF7096FF21A2459400AA7D37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF7096FD21A2459400AA7D37 /* Main.storyboard */; };
 		BF70970121A2459400AA7D37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF70970021A2459400AA7D37 /* Assets.xcassets */; };
 		BF70970421A2459400AA7D37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF70970221A2459400AA7D37 /* LaunchScreen.storyboard */; };
+		BF70970C21A246D500AA7D37 /* Environment.sks in Resources */ = {isa = PBXBuildFile; fileRef = BF70970B21A246D500AA7D37 /* Environment.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		BF70970021A2459400AA7D37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF70970321A2459400AA7D37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF70970521A2459400AA7D37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF70970B21A246D500AA7D37 /* Environment.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Environment.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				BF7096F321A2459400AA7D37 /* AppDelegate.swift */,
+				BF70970B21A246D500AA7D37 /* Environment.sks */,
 				BF7096F521A2459400AA7D37 /* GameScene.sks */,
 				BF7096F721A2459400AA7D37 /* Actions.sks */,
 				BF7096F921A2459400AA7D37 /* GameScene.swift */,
@@ -134,6 +137,7 @@
 				BF7096FF21A2459400AA7D37 /* Main.storyboard in Resources */,
 				BF7096F621A2459400AA7D37 /* GameScene.sks in Resources */,
 				BF70970121A2459400AA7D37 /* Assets.xcassets in Resources */,
+				BF70970C21A246D500AA7D37 /* Environment.sks in Resources */,
 				BF70970421A2459400AA7D37 /* LaunchScreen.storyboard in Resources */,
 				BF7096F821A2459400AA7D37 /* Actions.sks in Resources */,
 			);
